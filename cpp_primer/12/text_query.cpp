@@ -40,13 +40,11 @@ TextQuery::TextQuery(ifstream &infile) : file(new vector<string>) {
         istringstream line(text);
         string word;
         while (line >> word) {
-            auto it = wm.find(word);
-            if (it == wm.end()) {
-                shared_ptr<set<line_no>> sp(new set<line_no>());
-                auto ret = wm.insert(pair<string, shared_ptr<set<line_no>>>(word, sp));
-                it = ret.first;
+            auto &it = wm[word];
+            if (!it) {
+                it.reset(new set<line_no>());
             }
-            it->second->insert(n);
+            it->insert(n);
         }
     }
 }
