@@ -2,30 +2,30 @@
 
 using namespace std;
 
-StrBlob::StrBlob() : data(make_shared<vector<string>>()) {
+str_blob_t::str_blob_t() : data(make_shared<vector<string>>()) {
 }
 
-StrBlob::StrBlob(initializer_list<string> il) : data(make_shared<vector<string>>(il)) {
+str_blob_t::str_blob_t(initializer_list<string> il) : data(make_shared<vector<string>>(il)) {
 }
 
-void StrBlob::check(size_type i, const std::string &msg) const {
+void str_blob_t::check(size_type i, const std::string &msg) const {
     if (i >= data->size()) {
         throw out_of_range(msg);
     }
 }
 
-string &StrBlob::front() {
-    check(0, "front on empty StrBlob");
+string &str_blob_t::front() {
+    check(0, "front on empty str_blob_t");
     return data->front();
 }
 
-string &StrBlob::back() {
-    check(0, "back on empty StrBlob");
+string &str_blob_t::back() {
+    check(0, "back on empty str_blob_t");
     return data->back();
 }
 
-void StrBlob::pop_back() {
-    check(0, "pop_back on empty StrBlob");
+void str_blob_t::pop_back() {
+    check(0, "pop_back on empty str_blob_t");
     data->pop_back();
 }
 

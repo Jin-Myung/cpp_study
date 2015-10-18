@@ -8,4 +8,5 @@ int main() {
     string str = "hello";
     transform(str.begin(), str.end(), str.begin(), ::toupper);
     cout << str << endl;
+    return 0;
 }

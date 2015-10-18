@@ -7,12 +7,12 @@ bool is_palindrome(const std::string &s) {
 }
 
 void test(const std::string& s) {
-    std::cout << "\"" << s << "\" "
+    std::cout << s << " "
         << (is_palindrome(s) ? "is" : "is not")
         << " a palindrome\n";
 }
  
 int main() {
-    test("radar");
-    test("hello");
+    test("anna");
+    test("nexus");
 }

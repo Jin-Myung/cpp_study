@@ -4,18 +4,18 @@
 using namespace std;
 
 int main() {
-    allocator<string> alloc;
-    auto const p = alloc.allocate(10);
+    allocator<string> alc;
+    auto const p = alc.allocate(10);
     auto q = p;
-    alloc.construct(q++);
-    alloc.construct(q++, 10, 'c');
-    alloc.construct(q++, "hi");
+    alc.construct(q++);
+    alc.construct(q++, 10, 'd');
+    alc.construct(q++, "hello");
     
     while (p != q) {
         --q;
         cout << *q << endl;
-        alloc.destroy(q);
+        alc.destroy(q);
     }
-    alloc.deallocate(p, 10);
+    alc.deallocate(p, 10);
     return 0;
 }

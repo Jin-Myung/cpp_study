@@ -1,65 +1,65 @@
 #include <string>
 #include <set>
 
-class Message;
+class msg_t;
 
-class Folder {
+class fold_t {
 public:
-    void addMsg(const Message *);
-    void remMsg(const Message *);
+    void addMsg(const msg_t *);
+    void remMsg(const msg_t *);
 private:
-    std::set<Message *> messages;
+    std::set<msg_t *> messages;
 };
 
-class Message {
-    friend class Folder;
-    friend void swap(Message &lhs, Message &rhs);
+class msg_t {
+    friend class fold_t;
+    friend void swap(msg_t &lhs, msg_t &rhs);
 public:
-    explicit Message(const std::string &str = "") : contents(str) { }
-    Message(const Message &m) : contents(m.contents), folders(m.folders) {
-        add_to_Folders(m);
+    explicit msg_t(const std::string &str = "") : contents(str) { }
+    msg_t(const msg_t &m) : contents(m.contents), folders(m.folders) {
+        add2fold(m);
     }
-    Message &operator=(const Message &rhs) {
-        remove_from_Folders();
+    msg_t &operator=(const msg_t &rhs) {
+        remove4fold();
         contents = rhs.contents;
         folders = rhs.folders;
-        add_to_Folders(rhs);
+        add2fold(rhs);
         return *this;
     }
-    Message &operator=(Message &&rhs) {
+    msg_t &operator=(msg_t &&rhs) {
         if (this != &rhs) {
-            remove_from_Folders();
+            remove4fold();
             contents = std::move(rhs.contents);
-            move_Folders(&rhs);
+            move_fold(&rhs);
         }
         return *this;
     }
-    ~Message() {
-        remove_from_Folders();
+    ~msg_t() {
+        remove4fold();
     }
     
-    void save(Folder &f) {
+    void save(fold_t &f) {
         folders.insert(&f);
         f.addMsg(this);
     }
-    void remove(Folder &f) {
+    void remove(fold_t &f) {
         folders.erase(&f);
         f.remMsg(this);
     }
 private:
     std::string contents;
-    std::set<Folder *> folders;
-    void add_to_Folders(const Message &m) {
+    std::set<fold_t *> folders;
+    void add2fold(const msg_t &m) {
         for (auto f : m.folders) {
             f->addMsg(this);
         }
     }
-    void remove_from_Folders() {
+    void remove4fold() {
         for (auto f : folders) {
             f->remMsg(this);
         }
     }
-    void move_Folders(Message *m) {
+    void move_fold(msg_t *m) {
         folders = std::move(m->folders);
         for (auto f : folders) {
             f->remMsg(m);
@@ -69,25 +69,22 @@ private:
     }
 };
 
-void Folder::addMsg(const Message *) {
+void fold_t::addMsg(const msg_t *) {
     
 }
 
-void Folder::remMsg(const Message *) {
+void fold_t::remMsg(const msg_t *) {
     
 }
 
-void swap(Message &lhs, Message &rhs) {
-    using std::swap; // not strictly needed in this case, but good habit
-    // remove pointers to each Message from their (original) respective Folders
+void swap(msg_t &lhs, msg_t &rhs) {
+    using std::swap;
     for (auto f: lhs.folders)
         f->remMsg(&lhs);
     for (auto f: rhs.folders)
         f->remMsg(&rhs);
-    // swap the contents and Folder pointer sets
     swap(lhs.folders, rhs.folders);     // uses swap(set&, set&)
     swap(lhs.contents, rhs.contents);   // swap(string&, string&)
-    // add pointers to each Message to their (new) respective Folders
     for (auto f: lhs.folders)
         f->addMsg(&lhs);
     for (auto f: rhs.folders)

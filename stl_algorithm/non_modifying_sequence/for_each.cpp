@@ -11,7 +11,7 @@ int main() {
     copy(v.cbegin(), v.cend(), ostream_iterator<int>(cout, " "));
     cout << "\n";
 
-    for_each(v.begin(), v.end(), [](int &ii){ ++ii; } );
+    for_each(v.begin(), v.end(), [](int &ii){ ii *= 2; } );
     copy(v.cbegin(), v.cend(), ostream_iterator<int>(cout, " "));
     cout << endl;
 

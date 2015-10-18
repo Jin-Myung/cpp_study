@@ -9,32 +9,32 @@
 
 using namespace std;
 
-class QueryResult;
+class qr_t;
 
-class TextQuery {
+class tq_t {
 public:
     using line_no = vector<string>::size_type;
-    TextQuery(ifstream &infile);
-    QueryResult query(const string &) const;
+    tq_t(ifstream &inf);
+    qr_t query(const string &) const;
 private:
     shared_ptr<vector<string>> file;
     map<string, shared_ptr<set<line_no>>> wm;
 };
 
-class QueryResult {
-    friend ostream &print(ostream &os, const QueryResult &qr);
+class qr_t {
+    friend ostream &print(ostream &os, const qr_t &qr);
 public:
-    QueryResult(string s, shared_ptr<set<TextQuery::line_no>> p, shared_ptr<vector<string>> f)
+    qr_t(string s, shared_ptr<set<tq_t::line_no>> p, shared_ptr<vector<string>> f)
             : sought(s), lines(p), file(f) { }
 private:
     string sought;
-    shared_ptr<set<TextQuery::line_no>> lines;
+    shared_ptr<set<tq_t::line_no>> lines;
     shared_ptr<vector<string>> file;
 };
 
-TextQuery::TextQuery(ifstream &infile) : file(new vector<string>) {
+tq_t::tq_t(ifstream &inf) : file(new vector<string>) {
     string text;
-    while (getline(infile, text)) {
+    while (getline(inf, text)) {
         file->push_back(text);
         int n = file->size() - 1;
         istringstream line(text);
@@ -49,17 +49,17 @@ TextQuery::TextQuery(ifstream &infile) : file(new vector<string>) {
     }
 }
 
-QueryResult TextQuery::query(const string &s) const {
+qr_t tq_t::query(const string &s) const {
     static shared_ptr<set<line_no>> nodata(new set<line_no>);
     auto loc = wm.find(s);
     if (loc == wm.end()) {
-        return QueryResult(s, nodata, file);
+        return qr_t(s, nodata, file);
     } else {
-        return QueryResult(s, loc->second, file);
+        return qr_t(s, loc->second, file);
     }
 }
 
-ostream &print(ostream &os, const QueryResult &qr) {
+ostream &print(ostream &os, const qr_t &qr) {
     os << qr.sought << " occurs " << qr.lines->size() << " time(s)" << endl;
     for (auto num : *qr.lines) {
         os << "\t(line " << num + 1 << ") "
@@ -68,8 +68,8 @@ ostream &print(ostream &os, const QueryResult &qr) {
     return os;
 }
 
-void runQueries(ifstream &infile) {
-    TextQuery tq(infile);
+void runQueries(ifstream &inf) {
+    tq_t tq(inf);
     while (true) {
         cout << "enter word to look for, or q to quit: ";
         string s;
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
         cout << "Usage: ./a.out <text file name>\n" << endl;
         return 0;
     }
-    ifstream infile(argv[1]);
-    runQueries(infile);
+    ifstream inf(argv[1]);
+    runQueries(inf);
     return 0;
 }

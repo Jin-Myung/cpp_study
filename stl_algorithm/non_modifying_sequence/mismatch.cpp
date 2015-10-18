@@ -10,7 +10,7 @@ std::string mirror_ends(std::string str) {
 }
 
 int main() {
-    std::cout << mirror_ends("abXYZba") << '\n'
-              << mirror_ends("abca") << '\n'
-              << mirror_ends("aba") << '\n';
+    std::cout << mirror_ends("ab1234ba") << '\n'
+              << mirror_ends("1231") << '\n'
+              << mirror_ends("12321") << '\n';
 }

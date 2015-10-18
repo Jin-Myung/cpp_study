@@ -1,22 +1,22 @@
 #include <string>
 #include <memory>
 
-class StrVec {
+class str_vec_t {
 public:
-    StrVec() : elements(nullptr), first_free(nullptr), cap(nullptr) { }
-    StrVec(const StrVec &s) {
+    str_vec_t() : elements(nullptr), first_free(nullptr), cap(nullptr) { }
+    str_vec_t(const str_vec_t &s) {
         auto newdata = alloc_n_copy(s.begin(), s.end());
         elements = newdata.first;
         first_free = cap = newdata.second;
     }
-    StrVec &operator=(const StrVec &rhs) {
+    str_vec_t &operator=(const str_vec_t &rhs) {
         auto data = alloc_n_copy(rhs.begin(), rhs.end());
         free();
         elements = data.first;
         first_free = cap = data.second;
         return *this;
     }
-    ~StrVec() {
+    ~str_vec_t() {
         free();
     }
     

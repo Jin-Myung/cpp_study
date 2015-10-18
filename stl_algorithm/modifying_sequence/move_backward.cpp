@@ -12,7 +12,7 @@ void print(const vector<string> &str_arr) {
 }
 
 int main() {
-    vector<string> src{"foo", "bar", "baz"};
+    vector<string> src{"abc", "def", "ghi"};
     vector<string> dst(3);
     
     print(src);

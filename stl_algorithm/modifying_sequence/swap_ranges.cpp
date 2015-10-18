@@ -12,4 +12,5 @@ int main() {
     cout << "\n";
     copy(b.begin(), b.end(), ostream_iterator<int>(cout, " "));
     cout << "\n";
+    return 0;
 }
