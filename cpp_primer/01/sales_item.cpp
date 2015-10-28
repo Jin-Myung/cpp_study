@@ -8,23 +8,31 @@ class Sales_item {
 public:
     friend istream & operator>> (istream &, Sales_item&);
     friend ostream & operator<< (ostream &, const Sales_item&);
-    string get_isbn() { return isbn; }
+    string get_isbn() const { return isbn; }
     Sales_item &operator+=(const Sales_item &rhs) {
-        this->num += rhs.num;
+        this->num_sold += rhs.num_sold;
         return *this;
+    }
+    double avg_price() const {
+        if (num_sold) {
+            return earn / num_sold;
+        } else {
+            return 0.;
+        }
     }
 private:
     string isbn;
-    double num;
+    unsigned num_sold = 0;
+    double earn = 0.0;
 };
 
 istream & operator>> (istream &is, Sales_item& si) {
-    is >> si.isbn >> si.num;
+    is >> si.isbn >> si.num_sold;
     return is;
 }
 
 ostream & operator<< (ostream &os, const Sales_item& si) {
-    os << si.isbn << ": " << si.num;
+    os << si.isbn << ": " << si.num_sold;
     return os;
 }
 
